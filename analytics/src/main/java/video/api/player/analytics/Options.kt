@@ -21,13 +21,13 @@ data class VideoInfo(val pingUrl: String, val videoId: String, val videoType: Vi
 
 data class Options(
     val videoInfo: VideoInfo,
-    val metadata: Map<String, String>,
+    val metadata: Map<String, String> = emptyMap(),
     val onSessionIdReceived: ((sessionId: String) -> Unit)? = null,
     val onPing: ((message: PlaybackPingMessage) -> Unit)? = null
 ) {
     constructor(
         mediaUrl: String,
-        metadata: Map<String, String>,
+        metadata: Map<String, String> = emptyMap(),
         onSessionIdReceived: ((sessionId: String) -> Unit)? = null,
         onPing: ((message: PlaybackPingMessage) -> Unit)? = null
     ) : this(parseMediaUrl(mediaUrl), metadata, onSessionIdReceived, onPing)
