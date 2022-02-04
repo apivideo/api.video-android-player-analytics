@@ -14,7 +14,18 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Future
 import kotlin.concurrent.timerTask
 
-open class PlayerAnalytics(context: Context, private val options: Options) {
+/**
+ * Main controls on player analytics.
+ *
+ * A [Timer] sends regularly list of [Event] logged.
+ *
+ * @param context application context
+ * @param options player analytics options
+ */
+open class PlayerAnalytics(
+    context: Context,
+    private val options: Options
+) {
     companion object {
         private const val PLAYBACK_PING_DELAY = 10 * 1000L
     }
@@ -35,7 +46,15 @@ open class PlayerAnalytics(context: Context, private val options: Options) {
         start()
     }
 
+    /**
+     * Get/Set player current time. This field must be updated as the same rate of the video frame rate.
+     */
     var currentTime: Float = 0F
+        /**
+         * Set player current time
+         *
+         * @param value player current time in second
+         */
         set(value) {
             if (value >= 0) {
                 field = value
@@ -44,27 +63,54 @@ open class PlayerAnalytics(context: Context, private val options: Options) {
             }
         }
 
+    /**
+     * Calls for the first play of the video.
+     *
+     * @return a [Future] result. Use it to check if an exception has happened.
+     */
     fun play(): Future<Unit> {
         schedule()
         return addEventAt(Event.PLAY)
     }
 
+    /**
+     * Resumes a paused video.
+     *
+     * @return a [Future] result. Use it to check if an exception has happened.
+     */
     fun resume(): Future<Unit> {
         schedule()
         return addEventAt(Event.RESUME)
     }
 
+    /**
+     * Calls when video is ready to play.
+     *
+     * @return a [Future] result. Use it to check if an exception has happened.
+     */
     fun ready(): Future<Unit> {
         addEventAt(Event.READY)
         return sendPing(buildPingPayload())
     }
 
+    /**
+     * Calls when video is over.
+     *
+     * @return a [Future] result. Use it to check if an exception has happened.
+     */
     fun end(): Future<Unit> {
         unschedule()
         addEventAt(Event.END)
         return sendPing(buildPingPayload())
     }
 
+    /**
+     * Calls when video is being seek.
+     *
+     * @param from seek start time in second
+     * @param to seek end time in second
+     * @return a [Future] result. Use it to check if an exception has happened.
+     */
     fun seek(from: Float, to: Float): Future<Unit> {
         if ((from > 0) && (to > 0)) {
             eventsStack.add(
@@ -84,12 +130,22 @@ open class PlayerAnalytics(context: Context, private val options: Options) {
         }
     }
 
+    /**
+     * Calls when video is paused.
+     *
+     * @return a [Future] result. Use it to check if an exception has happened.
+     */
     fun pause(): Future<Unit> {
         unschedule()
         addEventAt(Event.PAUSE)
         return sendPing(buildPingPayload())
     }
 
+    /**
+     * Calls when video will not be read again.
+     *
+     * @return a [Future] result. Use it to check if an exception has happened.
+     */
     fun destroy(): Future<Unit> {
         unschedule()
         return pause()

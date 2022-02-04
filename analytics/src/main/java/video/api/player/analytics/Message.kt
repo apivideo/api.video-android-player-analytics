@@ -78,6 +78,9 @@ data class Session(
     }
 }
 
+/**
+ * Message send to the player analytics collector.
+ */
 @Serializable
 data class PlaybackPingMessage(
     @SerialName("emitted_at")
@@ -86,6 +89,9 @@ data class PlaybackPingMessage(
     val events: List<PingEvent>
 )
 
+/**
+ * A ping event is an [Event] log. It contains the [Event] itself and timing information.
+ */
 @Serializable
 data class PingEvent(
     @SerialName("emitted_at")
