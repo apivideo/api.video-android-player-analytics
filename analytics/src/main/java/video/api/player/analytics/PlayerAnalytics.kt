@@ -37,9 +37,9 @@ open class PlayerAnalytics(
     private val loadedAt: String = Utils.nowUtcToIso()
     internal var sessionId: String? = null
         set(value) {
-            value?.let {
-                options.onSessionIdReceived?.let { it(value) }
-                field = value
+            value?.let { session ->
+                options.onSessionIdReceived?.let { it(session) }
+                field = session
             }
         }
     private val queue = Volley.newRequestQueue(context).apply {
