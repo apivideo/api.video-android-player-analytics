@@ -93,6 +93,38 @@ class ApiVideoPlayerAnalyticsTest {
     }
 
     @Test
+    fun `set event time test`() {
+        val builder = PlayerAnalyticsTestBuilder()
+        val playerAnalytics =
+            builder.setResponseSessionId(FAKE_SESSION_ID).build()
+        val ts = 15.3F
+
+        playerAnalytics.pause(ts).get()
+
+        val pingMessage = builder.mockHttpStack.lastPostBody?.let { decodePingMessage(it) }
+        assertNotNull(pingMessage)
+        assertEquals(1, pingMessage!!.events.size)
+        assertEquals(Event.PAUSE, pingMessage.events[0].type)
+        assertEquals(ts, pingMessage.events[0].at)
+    }
+
+    @Test
+    fun `set current time test`() {
+        val builder = PlayerAnalyticsTestBuilder()
+        val playerAnalytics =
+            builder.setResponseSessionId(FAKE_SESSION_ID).build()
+        val ts = 5.92F
+        playerAnalytics.currentTime = ts
+        playerAnalytics.pause().get()
+
+        val pingMessage = builder.mockHttpStack.lastPostBody?.let { decodePingMessage(it) }
+        assertNotNull(pingMessage)
+        assertEquals(1, pingMessage!!.events.size)
+        assertEquals(Event.PAUSE, pingMessage.events[0].type)
+        assertEquals(ts, pingMessage.events[0].at)
+    }
+
+    @Test
     fun `send ping failed`() {
         val playerAnalytics =
             PlayerAnalyticsTestBuilder().setResponse(IOException()).build()

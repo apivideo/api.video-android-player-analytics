@@ -68,9 +68,9 @@ class ApiVideoPlayerAnalytics(
      *
      * @return a [Future] result. Use it to check if an exception has happened.
      */
-    fun play(): Future<Unit> {
+    fun play(eventTime: Float = currentTime): Future<Unit> {
         schedule()
-        return addEventAt(Event.PLAY)
+        return addEventAt(Event.PLAY, eventTime)
     }
 
     /**
@@ -78,9 +78,9 @@ class ApiVideoPlayerAnalytics(
      *
      * @return a [Future] result. Use it to check if an exception has happened.
      */
-    fun resume(): Future<Unit> {
+    fun resume(eventTime: Float = currentTime): Future<Unit> {
         schedule()
-        return addEventAt(Event.RESUME)
+        return addEventAt(Event.RESUME, eventTime)
     }
 
     /**
@@ -88,8 +88,8 @@ class ApiVideoPlayerAnalytics(
      *
      * @return a [Future] result. Use it to check if an exception has happened.
      */
-    fun ready(): Future<Unit> {
-        addEventAt(Event.READY)
+    fun ready(eventTime: Float = currentTime): Future<Unit> {
+        addEventAt(Event.READY, eventTime)
         return sendPing(buildPingPayload())
     }
 
@@ -98,9 +98,9 @@ class ApiVideoPlayerAnalytics(
      *
      * @return a [Future] result. Use it to check if an exception has happened.
      */
-    fun end(): Future<Unit> {
+    fun end(eventTime: Float = currentTime): Future<Unit> {
         unschedule()
-        addEventAt(Event.END)
+        addEventAt(Event.END, eventTime)
         return sendPing(buildPingPayload())
     }
 
@@ -135,9 +135,9 @@ class ApiVideoPlayerAnalytics(
      *
      * @return a [Future] result. Use it to check if an exception has happened.
      */
-    fun pause(): Future<Unit> {
+    fun pause(eventTime: Float = currentTime): Future<Unit> {
         unschedule()
-        addEventAt(Event.PAUSE)
+        addEventAt(Event.PAUSE, eventTime)
         return sendPing(buildPingPayload())
     }
 
@@ -146,13 +146,13 @@ class ApiVideoPlayerAnalytics(
      *
      * @return a [Future] result. Use it to check if an exception has happened.
      */
-    fun destroy(): Future<Unit> {
+    fun destroy(eventTime: Float = currentTime): Future<Unit> {
         unschedule()
-        return pause()
+        return pause(eventTime)
     }
 
-    private fun addEventAt(eventName: Event): Future<Unit> {
-        eventsStack.add(PingEvent(type = eventName, at = currentTime))
+    private fun addEventAt(eventName: Event, eventTime: Float): Future<Unit> {
+        eventsStack.add(PingEvent(type = eventName, at = eventTime))
         return CompletableFuture.completedFuture(Unit)
     }
 
