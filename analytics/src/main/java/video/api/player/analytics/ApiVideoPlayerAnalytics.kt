@@ -22,7 +22,7 @@ import kotlin.concurrent.timerTask
  * @param context application context
  * @param options player analytics options
  */
-open class PlayerAnalytics(
+class ApiVideoPlayerAnalytics(
     context: Context,
     private val options: Options
 ) {

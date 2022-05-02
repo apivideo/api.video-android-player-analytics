@@ -19,7 +19,7 @@ import java.io.IOException
 
 const val FAKE_SESSION_ID = "1234"
 
-class PlayerAnalyticsTest {
+class ApiVideoPlayerAnalyticsTest {
     @OptIn(ExperimentalSerializationApi::class)
     private val json = Json { explicitNulls = false }
 
@@ -149,7 +149,7 @@ class PlayerAnalyticsTestBuilder {
         return this
     }
 
-    fun build(): PlayerAnalytics {
+    fun build(): ApiVideoPlayerAnalytics {
         response?.let {
             mockHttpStack.setResponseToReturn(
                 HttpResponse(
@@ -170,6 +170,6 @@ class PlayerAnalyticsTestBuilder {
         mockkStatic(Volley::class)
         every { Volley.newRequestQueue(any()) } returns queue
 
-        return PlayerAnalytics(mockk(relaxed = true), options)
+        return ApiVideoPlayerAnalytics(mockk(relaxed = true), options)
     }
 }

@@ -7,7 +7,7 @@ import android.util.Log
 import android.widget.MediaController
 import android.widget.VideoView
 import video.api.player.analytics.Options
-import video.api.player.analytics.PlayerAnalytics
+import video.api.player.analytics.ApiVideoPlayerAnalytics
 import java.util.*
 import kotlin.concurrent.timerTask
 
@@ -21,7 +21,7 @@ class AnalyticsVideoView(context: Context, attrs: AttributeSet) :
         const val TAG = "VideoView"
     }
 
-    private var playerAnalytics: PlayerAnalytics? = null
+    private var playerAnalytics: ApiVideoPlayerAnalytics? = null
     private val timer = Timer().scheduleAtFixedRate(timerTask {
         playerAnalytics?.currentTime = currentTime
     }, 0, 33L) // Updates time every 33 ms ~ 30Hz for 30 fps
@@ -78,7 +78,7 @@ class AnalyticsVideoView(context: Context, attrs: AttributeSet) :
         super.setVideoURI(uri)
         isFirstPlay = true
         playerAnalytics?.destroy()
-        playerAnalytics = PlayerAnalytics(
+        playerAnalytics = ApiVideoPlayerAnalytics(
             context,
             Options(
                 uri.toString(),

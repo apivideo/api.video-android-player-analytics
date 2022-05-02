@@ -15,7 +15,7 @@
 - [Sample application](#sample-application)
 - [Documentation](#documentation)
     - [Options](#options)
-    - [PlayerAnalytics API](#playeranalytics-api)
+    - [ApiVideoPlayerAnalytics API](#apivideoplayeranalytics-api)
         - [`play(): Future<void>`](#play-futurevoid)
         - [`resume(): Future<void>`](#resume-futurevoid)
         - [`ready(): Future<void>`](#ready-futurevoid)
@@ -76,7 +76,7 @@ Options instantiation is made with either mediaUrl or videoInfo.
 
 Once the module is instantiated, the following methods have to be called to monitor the playback events.
 
-## PlayerAnalytics API
+## ApiVideoPlayerAnalytics API
 
 #### `play(): Future<void>`
 > method to call when the video starts playing for the first time (in the case of a resume after paused, use `resume()`)
