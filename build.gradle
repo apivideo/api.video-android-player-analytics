@@ -5,8 +5,8 @@ buildscript {
         minSdk = 24
         targetSdk = 31
 
-        analytics_version_code = '1'
-        analytics_version = '1.0.0'
+        versionCode = properties['VERSION_CODE'].toInteger()
+        versionName = "${properties['VERSION_NAME']}"
 
         // Kotlin
         kotlin_version = "1.6.10"

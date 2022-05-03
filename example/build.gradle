@@ -10,8 +10,8 @@ android {
         applicationId "video.api.analytics.example"
         minSdk rootProject.minSdk
         targetSdk rootProject.targetSdk
-        versionCode Integer.valueOf("$rootProject.analytics_version_code")
-        versionName "$rootProject.analytics_version"
+        versionCode rootProject.versionCode
+        versionName rootProject.versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
