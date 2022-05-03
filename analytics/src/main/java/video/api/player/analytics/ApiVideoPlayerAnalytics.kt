@@ -112,7 +112,7 @@ class ApiVideoPlayerAnalytics(
      * @return a [Future] result. Use it to check if an exception has happened.
      */
     fun seek(from: Float, to: Float): Future<Unit> {
-        if ((from > 0) && (to > 0)) {
+        if ((from >= 0) && (to >= 0)) {
             eventsStack.add(
                 PingEvent(
                     type = if (from < to) {
