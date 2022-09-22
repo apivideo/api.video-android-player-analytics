@@ -17,10 +17,10 @@ import kotlin.concurrent.timerTask
 /**
  * Main controls on player analytics.
  *
- * A [Timer] sends regularly list of [Event] logged.
+ * A [Timer] sends regularly list of the logged [Event].
  *
- * @param context application context
- * @param options player analytics options
+ * @param context the application context
+ * @param options the player analytics options
  */
 class ApiVideoPlayerAnalytics(
     context: Context,
@@ -53,7 +53,7 @@ class ApiVideoPlayerAnalytics(
         /**
          * Set player current time
          *
-         * @param value player current time in second
+         * @param value the player current time in second
          */
         set(value) {
             if (value >= 0) {
@@ -107,8 +107,8 @@ class ApiVideoPlayerAnalytics(
     /**
      * Calls when video is being seek.
      *
-     * @param from seek start time in second
-     * @param to seek end time in second
+     * @param from the seek start time in second
+     * @param to the seek end time in second
      * @return a [Future] result. Use it to check if an exception has happened.
      */
     fun seek(from: Float, to: Float): Future<Unit> {
