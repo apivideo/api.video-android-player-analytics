@@ -2,9 +2,13 @@
 
 All changes to this project will be documented in this file.
 
-## [1.2.0] - 2022-09-28
+## [1.2.1] - 2022-09-28
 
 - Add a specific library for ExoPlayer
+
+## [1.2.0] - 2022-09-28
+
+- Do not use
 
 ## [1.1.0] - 2022-05-02
 
