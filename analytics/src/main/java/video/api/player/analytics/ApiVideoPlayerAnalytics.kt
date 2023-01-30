@@ -1,13 +1,5 @@
 package video.api.player.analytics
 
-import android.content.Context
-import com.android.volley.Request
-import com.android.volley.toolbox.Volley
-import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.jsonObject
-import kotlinx.serialization.json.jsonPrimitive
 import java.io.IOException
 import java.util.*
 import java.util.concurrent.CompletableFuture
@@ -19,19 +11,15 @@ import kotlin.concurrent.timerTask
  *
  * A [Timer] sends regularly list of the logged [Event].
  *
- * @param context the application context
  * @param options the player analytics options
  */
 class ApiVideoPlayerAnalytics(
-    context: Context,
     private val options: Options
 ) {
     companion object {
         private const val PLAYBACK_PING_DELAY = 10 * 1000L
     }
 
-    @OptIn(ExperimentalSerializationApi::class)
-    private val json = Json { explicitNulls = false }
     private val eventsStack = mutableListOf<PingEvent>()
     private var timer: Timer? = null
     private val loadedAt: String = Utils.nowUtcToIso()
@@ -42,9 +30,6 @@ class ApiVideoPlayerAnalytics(
                 field = session
             }
         }
-    private val queue = Volley.newRequestQueue(context).apply {
-        start()
-    }
 
     /**
      * Get/Set player current time. This field must be updated as the same rate of the video frame rate.
@@ -200,32 +185,17 @@ class ApiVideoPlayerAnalytics(
 
     private fun sendPing(payload: PlaybackPingMessage): Future<Unit> {
         options.onPing?.let { it(payload) }
-
         val future = CompletableFuture<Unit>()
-        val stringRequest = StringRequest(
-            Request.Method.POST,
-            options.videoInfo.pingUrl,
-            json.encodeToString(payload),
-            { response ->
-                try {
-                    val jsonResponse = Json.parseToJsonElement(response).jsonObject
-                    jsonResponse["session"]?.let {
-                        val sessionId = it.jsonPrimitive.content
-                        if (this.sessionId == null) {
-                            this.sessionId = sessionId
-                        }
-                    }
-                    future.complete(Unit)
-                } catch (e: Exception) {
-                    future.completeExceptionally(e)
+        RequestManager.sendPing(options.videoInfo.pingUrl, payload,
+            {
+                if (sessionId == null) {
+                    sessionId = it
                 }
-            },
-            { error ->
+                future.complete(Unit)
+            }, { error ->
                 future.completeExceptionally(error)
             })
-
         eventsStack.clear()
-        queue.add(stringRequest)
         return future
     }
 }

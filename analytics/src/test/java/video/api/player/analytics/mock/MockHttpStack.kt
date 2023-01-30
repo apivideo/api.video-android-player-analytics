@@ -35,6 +35,7 @@ class MockHttpStack : BaseHttpStack() {
 
     fun setResponseToReturn(response: HttpResponse?) {
         mResponseToReturn = response
+        mExceptionToThrow = null
     }
 
     fun setExceptionToThrow(exception: Exception?) {

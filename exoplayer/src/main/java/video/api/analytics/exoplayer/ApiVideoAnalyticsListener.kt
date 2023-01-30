@@ -1,6 +1,5 @@
 package video.api.analytics.exoplayer
 
-import android.content.Context
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.analytics.AnalyticsListener
@@ -17,12 +16,11 @@ import video.api.player.analytics.Options
  * @param url the url of the video on api.video
  */
 class ApiVideoAnalyticsListener(
-    context: Context,
     private val player: ExoPlayer,
     url: String
 ) :
     AnalyticsListener {
-    private val analytics = ApiVideoPlayerAnalytics(context, Options(mediaUrl = url))
+    private val analytics = ApiVideoPlayerAnalytics(Options(mediaUrl = url))
     private var firstPlay = true
     private var isReady = false
 
