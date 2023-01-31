@@ -6,6 +6,7 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "ApiVideoPlayerAnalytics"
-include ':example'
+include ':examples:videoview'
+include ':examples:exoplayer'
 include ':analytics'
 include ':exoplayer'
