@@ -1,5 +1,6 @@
 package video.api.player.analytics
 
+import android.util.Log
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.BasicNetwork
@@ -17,7 +18,10 @@ object RequestManager {
     private val queue = RequestQueue(NoCache(), BasicNetwork(HurlStack())).apply { start() }
 
     @OptIn(ExperimentalSerializationApi::class)
-    private val json = Json { explicitNulls = false }
+    private val json = Json {
+        explicitNulls = false
+        encodeDefaults = true
+    }
 
     fun sendPing(
         url: String,
