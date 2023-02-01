@@ -2,6 +2,11 @@
 
 All changes to this project will be documented in this file.
 
+## [1.2.2] - 2023-02-01
+
+- Fix a random 400 error when sending events
+- Add an example to test ExoPlayer events
+
 ## [1.2.1] - 2022-09-28
 
 - Add a specific library for ExoPlayer
