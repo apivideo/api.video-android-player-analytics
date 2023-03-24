@@ -29,16 +29,20 @@ fun String.toVideoType(): VideoType {
 }
 
 /**
- * Describes a video.
+ * A class that describes a video from api.video.
  *
- * @param pingUrl the URL for player analytics collector
  * @param videoId the video id
  * @param videoType the video type
  */
-data class VideoInfo(val pingUrl: String, val videoId: String, val videoType: VideoType)
+data class VideoInfo(val videoId: String, val videoType: VideoType) {
+    /**
+     * The URL for player analytics collector
+     */
+    val pingUrl = "https://collector.api.video/${videoType.type}"
+}
 
 /**
- * Player analytics options.
+ * An option class to configure the player analytics.
  *
  * @param videoInfo the video info
  * @param metadata the user metadata. See [metadata](https://api.video/blog/tutorials/dynamic-metadata).
@@ -83,7 +87,6 @@ data class Options(
                 val videoId = matcher.group(3) ?: throw IOException("Failed to get videoId")
 
                 return VideoInfo(
-                    "https://collector.api.video/${videoType.type}",
                     videoId,
                     videoType
                 )

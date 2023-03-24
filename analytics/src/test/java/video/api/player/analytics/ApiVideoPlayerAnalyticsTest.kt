@@ -29,7 +29,6 @@ class ApiVideoPlayerAnalyticsTest {
 
     private var defaultOptions = Options(
         VideoInfo(
-            pingUrl = "https://aa",
             videoId = "videoId",
             videoType = VideoType.VOD
         ), emptyMap()
