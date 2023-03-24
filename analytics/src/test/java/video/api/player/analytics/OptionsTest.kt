@@ -7,10 +7,23 @@ import java.io.IOException
 
 class OptionsTest {
     @Test
-    fun `parse valid vod media url`() {
+    fun `parse valid former vod media url`() {
         val options =
             Options(
                 mediaUrl = "https://cdn.api.video/vod/vi5oDagRVJBSKHxSiPux5rYD/hls/manifest.m3u8",
+                metadata = emptyMap()
+            )
+
+        assertEquals("vi5oDagRVJBSKHxSiPux5rYD", options.videoInfo.videoId)
+        assertEquals(VideoType.VOD, options.videoInfo.videoType)
+        assertEquals("https://collector.api.video/vod", options.videoInfo.pingUrl)
+    }
+
+    @Test
+    fun `parse valid vod media url`() {
+        val options =
+            Options(
+                mediaUrl = "https://vod.api.video/vod/vi5oDagRVJBSKHxSiPux5rYD/hls/manifest.m3u8",
                 metadata = emptyMap()
             )
 

@@ -56,7 +56,7 @@ data class Options(
     val onPing: ((message: PlaybackPingMessage) -> Unit)? = null
 ) {
     /**
-     * @param mediaUrl the api.video URL of your URL (for example: `https://cdn.api.video/vod/vi5oDagRVJBSKHxSiPux5rYD/hls/manifest.m3u8`)
+     * @param mediaUrl the api.video URL of your URL (for example: `https://vod.api.video/vod/vi5oDagRVJBSKHxSiPux5rYD/hls/manifest.m3u8`)
      * @param metadata the user metadata. See [metadata](https://api.video/blog/tutorials/dynamic-metadata).
      * @param onSessionIdReceived the callback called when session id has been received
      * @param onPing the callback called before sending [PlaybackPingMessage]
