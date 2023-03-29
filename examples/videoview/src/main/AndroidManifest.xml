@@ -6,11 +6,10 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_api_video"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.PlayerAnalytics">
+        android:theme="@style/Theme.App">
         <activity
             android:name="video.api.player.analytics.example.videoview.MainActivity"
             android:exported="true"

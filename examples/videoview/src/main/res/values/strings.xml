@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PlayerAnalyticsVideoView</string>
+    <string name="app_name">VideoViewPlayerAnalytics</string>
     <string name="load">Load</string>
     <string name="video_url">Video URL</string>
     <string name="video_url_default">https://vod.api.video/vod/VIDEO_ID/hls/manifest.m3u8</string>
