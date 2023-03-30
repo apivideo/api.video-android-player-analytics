@@ -10,8 +10,7 @@ class OptionsTest {
     fun `parse valid former vod media url`() {
         val options =
             Options(
-                mediaUrl = "https://cdn.api.video/vod/vi5oDagRVJBSKHxSiPux5rYD/hls/manifest.m3u8",
-                metadata = emptyMap()
+                mediaUrl = "https://cdn.api.video/vod/vi5oDagRVJBSKHxSiPux5rYD/hls/manifest.m3u8"
             )
 
         assertEquals("vi5oDagRVJBSKHxSiPux5rYD", options.videoInfo.videoId)
@@ -23,11 +22,34 @@ class OptionsTest {
     fun `parse valid vod media url`() {
         val options =
             Options(
-                mediaUrl = "https://vod.api.video/vod/vi5oDagRVJBSKHxSiPux5rYD/hls/manifest.m3u8",
-                metadata = emptyMap()
+                mediaUrl = "https://vod.api.video/vod/vi5oNqxkifcXkT4auGNsvgZB/hls/manifest.m3u8"
             )
 
-        assertEquals("vi5oDagRVJBSKHxSiPux5rYD", options.videoInfo.videoId)
+        assertEquals("vi5oNqxkifcXkT4auGNsvgZB", options.videoInfo.videoId)
+        assertEquals(VideoType.VOD, options.videoInfo.videoType)
+        assertEquals("https://collector.api.video/vod", options.videoInfo.pingUrl)
+    }
+
+    @Test
+    fun `parse valid MP4 vod media url`() {
+        val options =
+            Options(
+                mediaUrl = "https://vod.api.video/vod/vi5oNqxkifcXkT4auGNsvgZB/mp4/source.mp4"
+            )
+
+        assertEquals("vi5oNqxkifcXkT4auGNsvgZB", options.videoInfo.videoId)
+        assertEquals(VideoType.VOD, options.videoInfo.videoType)
+        assertEquals("https://collector.api.video/vod", options.videoInfo.pingUrl)
+    }
+
+    @Test
+    fun `parse valid private vod media url`() {
+        val options =
+            Options(
+                mediaUrl = "https://vod.api.video/vod/vi5oNqxkifcXkT4auGNsvgZB/token/PRIVATE_TOKEN/hls/manifest.m3u8"
+            )
+
+        assertEquals("vi5oNqxkifcXkT4auGNsvgZB", options.videoInfo.videoId)
         assertEquals(VideoType.VOD, options.videoInfo.videoType)
         assertEquals("https://collector.api.video/vod", options.videoInfo.pingUrl)
     }
@@ -36,11 +58,22 @@ class OptionsTest {
     fun `parse valid live media url`() {
         val options =
             Options(
-                mediaUrl = "https://live.api.video/li6Anin2CG1eWirOCBnvYDzI.m3u",
-                metadata = emptyMap()
+                mediaUrl = "https://live.api.video/li77ACbZjzEJgmr8d0tm4xFt.m3u8"
             )
 
-        assertEquals("li6Anin2CG1eWirOCBnvYDzI", options.videoInfo.videoId)
+        assertEquals("li77ACbZjzEJgmr8d0tm4xFt", options.videoInfo.videoId)
+        assertEquals(VideoType.LIVE, options.videoInfo.videoType)
+        assertEquals("https://collector.api.video/live", options.videoInfo.pingUrl)
+    }
+
+    @Test
+    fun `parse valid private live media url`() {
+        val options =
+            Options(
+                mediaUrl = "https://live.api.video/private/PRIVATE_TOKEN/li77ACbZjzEJgmr8d0tm4xFt.m3u8"
+            )
+
+        assertEquals("li77ACbZjzEJgmr8d0tm4xFt", options.videoInfo.videoId)
         assertEquals(VideoType.LIVE, options.videoInfo.videoType)
         assertEquals("https://collector.api.video/live", options.videoInfo.pingUrl)
     }

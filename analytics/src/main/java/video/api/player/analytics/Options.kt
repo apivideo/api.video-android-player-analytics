@@ -71,7 +71,7 @@ data class Options(
     companion object {
         private fun parseMediaUrl(mediaUrl: String): VideoInfo {
             val regex =
-                "https:/.*[/](vod|live)([/]|[/.][^/]*[/])([^/^.]*)[/.].*"
+                "https:/.*[/](?<type>vod|live).*/(?<id>(vi|li)[^/^.]*)[/.].*"
             val pattern = Pattern.compile(regex)
             val matcher = pattern.matcher(mediaUrl)
 
@@ -81,10 +81,10 @@ data class Options(
 
             try {
                 matcher.find()
-
+                // Group naming is not supported before Android API 26
                 val videoType =
                     matcher.group(1)?.toVideoType() ?: throw IOException("Failed to get video type")
-                val videoId = matcher.group(3) ?: throw IOException("Failed to get videoId")
+                val videoId = matcher.group(2) ?: throw IOException("Failed to get videoId")
 
                 return VideoInfo(
                     videoId,
