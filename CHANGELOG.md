@@ -2,6 +2,11 @@
 
 All changes to this project will be documented in this file.
 
+## [1.2.3] - 2023-30-03
+
+- Fix private live stream URL parsing
+- Replace `cdn.api.video` by `vod.api.video`
+
 ## [1.2.2] - 2023-02-01
 
 - Fix a random 400 error when sending events
