@@ -1,6 +1,7 @@
 package video.api.player.analytics
 
 import java.io.IOException
+import java.net.URL
 import java.util.regex.Pattern
 
 /**
@@ -56,7 +57,7 @@ data class Options(
     val onPing: ((message: PlaybackPingMessage) -> Unit)? = null
 ) {
     /**
-     * @param mediaUrl the api.video URL of your URL (for example: `https://vod.api.video/vod/vi5oDagRVJBSKHxSiPux5rYD/hls/manifest.m3u8`)
+     * @param mediaUrl the api.video string of your URL (for example: `https://vod.api.video/vod/vi5oDagRVJBSKHxSiPux5rYD/hls/manifest.m3u8`)
      * @param metadata the user metadata. See [metadata](https://api.video/blog/tutorials/dynamic-metadata).
      * @param onSessionIdReceived the callback called when session id has been received
      * @param onPing the callback called before sending [PlaybackPingMessage]
@@ -66,14 +67,27 @@ data class Options(
         metadata: Map<String, String> = emptyMap(),
         onSessionIdReceived: ((sessionId: String) -> Unit)? = null,
         onPing: ((message: PlaybackPingMessage) -> Unit)? = null
+    ) : this(URL(mediaUrl), metadata, onSessionIdReceived, onPing)
+
+    /**
+     * @param mediaUrl the api.video URL of your URL (for example: URL("https://vod.api.video/vod/vi5oDagRVJBSKHxSiPux5rYD/hls/manifest.m3u8"))
+     * @param metadata the user metadata. See [metadata](https://api.video/blog/tutorials/dynamic-metadata).
+     * @param onSessionIdReceived the callback called when session id has been received
+     * @param onPing the callback called before sending [PlaybackPingMessage]
+     */
+    constructor(
+        mediaUrl: URL,
+        metadata: Map<String, String> = emptyMap(),
+        onSessionIdReceived: ((sessionId: String) -> Unit)? = null,
+        onPing: ((message: PlaybackPingMessage) -> Unit)? = null
     ) : this(parseMediaUrl(mediaUrl), metadata, onSessionIdReceived, onPing)
 
     companion object {
-        private fun parseMediaUrl(mediaUrl: String): VideoInfo {
+        private fun parseMediaUrl(mediaUrl: URL): VideoInfo {
             val regex =
                 "https:/.*[/](?<type>vod|live).*/(?<id>(vi|li)[^/^.]*)[/.].*"
             val pattern = Pattern.compile(regex)
-            val matcher = pattern.matcher(mediaUrl)
+            val matcher = pattern.matcher(mediaUrl.toString())
 
             if (matcher.groupCount() < 3) {
                 throw IOException("The media url doesn't look like an api.video URL.")
