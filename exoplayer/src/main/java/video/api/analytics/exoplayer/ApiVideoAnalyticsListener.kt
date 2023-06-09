@@ -5,22 +5,77 @@ import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.analytics.AnalyticsListener
 import video.api.player.analytics.ApiVideoPlayerAnalytics
 import video.api.player.analytics.Options
+import video.api.player.analytics.VideoInfo
+import java.net.URL
 
 /**
  * api.video implementation of [AnalyticsListener] for ExoPlayer.
  *
  * Use it with [ExoPlayer.addAnalyticsListener] and remove it with [ExoPlayer.removeAnalyticsListener].
- *
- * @param context the application context
- * @param player the [ExoPlayer]
- * @param url the url of the video on api.video
  */
-class ApiVideoAnalyticsListener(
+class ApiVideoAnalyticsListener
+private constructor(
     private val player: ExoPlayer,
-    url: String
+    private val analytics: ApiVideoPlayerAnalytics
 ) :
     AnalyticsListener {
-    private val analytics = ApiVideoPlayerAnalytics(Options(mediaUrl = url))
+
+    /**
+     * Creates a new instance of [ApiVideoAnalyticsListener].
+     *
+     * @param player the [ExoPlayer]
+     * @param videoInfo the video info.
+     */
+    constructor(
+        player: ExoPlayer,
+        videoInfo: VideoInfo
+    ) : this(
+        player,
+        ApiVideoPlayerAnalytics(Options(videoInfo = videoInfo))
+    )
+
+    /**
+     * Creates a new instance of [ApiVideoAnalyticsListener].
+     *
+     * @param player the [ExoPlayer]
+     * @param mediaUrl the api.video URL of your video (for example: `https://vod.api.video/vod/vi5oDagRVJBSKHxSiPux5rYD/hls/manifest.m3u8`)
+     * @param vodDomainURL the URL for the vod domain. Only if you have a custom vod domain.
+     * @param liveDomainURL the URL for the live domain. Only if you have a custom live domain.
+     */
+    constructor(
+        player: ExoPlayer,
+        mediaUrl: URL,
+        vodDomainURL: URL = URL(Options.DEFAULT_VOD_DOMAIN_URL),
+        liveDomainURL: URL = URL(Options.DEFAULT_LIVE_DOMAIN_URL)
+    ) : this(
+        player,
+        VideoInfo.fromMediaURL(
+            mediaUrl,
+            vodDomainURL,
+            liveDomainURL
+        )
+    )
+
+    /**
+     * Creates a new instance of [ApiVideoAnalyticsListener].
+     *
+     * @param player the [ExoPlayer]
+     * @param mediaUrl the api.video URL of your video (for example: `https://vod.api.video/vod/vi5oDagRVJBSKHxSiPux5rYD/hls/manifest.m3u8`)
+     * @param vodDomainURL the URL for the vod domain. Only if you have a custom vod domain.
+     * @param liveDomainURL the URL for the live domain. Only if you have a custom live domain.
+     */
+    constructor(
+        player: ExoPlayer,
+        mediaUrl: String,
+        vodDomainURL: String = Options.DEFAULT_VOD_DOMAIN_URL,
+        liveDomainURL: String = Options.DEFAULT_LIVE_DOMAIN_URL
+    ) : this(
+        player,
+        URL(mediaUrl),
+        URL(vodDomainURL),
+        URL(liveDomainURL)
+    )
+
     private var firstPlay = true
     private var isReady = false
 
