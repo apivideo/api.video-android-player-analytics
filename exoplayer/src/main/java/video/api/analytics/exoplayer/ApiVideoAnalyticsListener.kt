@@ -39,20 +39,14 @@ private constructor(
      *
      * @param player the [ExoPlayer]
      * @param mediaUrl the api.video URL of your video (for example: `https://vod.api.video/vod/vi5oDagRVJBSKHxSiPux5rYD/hls/manifest.m3u8`)
-     * @param vodDomainURL the URL for the vod domain. Only if you have a custom vod domain.
-     * @param liveDomainURL the URL for the live domain. Only if you have a custom live domain.
      */
     constructor(
         player: ExoPlayer,
-        mediaUrl: URL,
-        vodDomainURL: URL = URL(Options.DEFAULT_VOD_DOMAIN_URL),
-        liveDomainURL: URL = URL(Options.DEFAULT_LIVE_DOMAIN_URL)
+        mediaUrl: URL
     ) : this(
         player,
         VideoInfo.fromMediaURL(
-            mediaUrl,
-            vodDomainURL,
-            liveDomainURL
+            mediaUrl
         )
     )
 
@@ -61,19 +55,13 @@ private constructor(
      *
      * @param player the [ExoPlayer]
      * @param mediaUrl the api.video URL of your video (for example: `https://vod.api.video/vod/vi5oDagRVJBSKHxSiPux5rYD/hls/manifest.m3u8`)
-     * @param vodDomainURL the URL for the vod domain. Only if you have a custom vod domain.
-     * @param liveDomainURL the URL for the live domain. Only if you have a custom live domain.
      */
     constructor(
         player: ExoPlayer,
-        mediaUrl: String,
-        vodDomainURL: String = Options.DEFAULT_VOD_DOMAIN_URL,
-        liveDomainURL: String = Options.DEFAULT_LIVE_DOMAIN_URL
+        mediaUrl: String
     ) : this(
         player,
-        URL(mediaUrl),
-        URL(vodDomainURL),
-        URL(liveDomainURL)
+        URL(mediaUrl)
     )
 
     private var firstPlay = true
