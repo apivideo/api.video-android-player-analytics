@@ -51,7 +51,7 @@ object Utils {
                 } else if (mediaUrl.toString().startsWith(liveDomainURL.toString())) {
                     VideoType.LIVE
                 } else {
-                    throw IOException("The media url must start with ${vodDomainURLs.joinToString { ", " }} or $liveDomainURL")
+                    throw IOException("The media url must start with ${vodDomainURLs.joinToString(", ")} or $liveDomainURL")
                 }
             val videoId = matcher.group(1) ?: throw IOException("Failed to get videoId")
 
