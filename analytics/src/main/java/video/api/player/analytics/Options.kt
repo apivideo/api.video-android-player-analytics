@@ -64,25 +64,14 @@ data class VideoInfo(
          *
          * @param mediaUrl the media URL to parse
          * @param collectorDomainURL the URL for the player analytics collector. Only if you have a custom collector domain.
-         * @param vodDomainURL the URL for the vod domain. Only if you have a custom vod domain.
-         * @param liveDomainURL the URL for the live domain. Only if you have a custom live domain.
          */
         fun fromMediaURL(
             mediaUrl: URL,
-            collectorDomainURL: URL = URL(Options.DEFAULT_COLLECTOR_DOMAIN_URL),
-            vodDomainURL: URL = URL(Options.DEFAULT_VOD_DOMAIN_URL),
-            liveDomainURL: URL = URL(Options.DEFAULT_LIVE_DOMAIN_URL)
+            collectorDomainURL: URL = URL(Options.DEFAULT_COLLECTOR_DOMAIN_URL)
         ): VideoInfo {
-            val vodDomainURLs = if (vodDomainURL.toString() == Options.DEFAULT_VOD_DOMAIN_URL) {
-                listOf(vodDomainURL, URL(Options.DEFAULT_DEPRECATED_VOD_DOMAIN_URL))
-            } else {
-                listOf(vodDomainURL)
-            }
             return Utils.parseMediaUrl(
                 mediaUrl,
-                collectorDomainURL,
-                vodDomainURLs,
-                liveDomainURL
+                collectorDomainURL
             )
         }
 
@@ -91,19 +80,13 @@ data class VideoInfo(
          *
          * @param mediaUrl the media URL to parse
          * @param collectorDomainURL the URL for the player analytics collector. Only if you have a custom collector domain.
-         * @param vodDomainURL the URL for the vod domain. Only if you have a custom vod domain.
-         * @param liveDomainURL the URL for the live domain. Only if you have a custom live domain.
          */
         fun fromMediaURL(
             mediaUrl: String,
-            collectorDomainURL: String = Options.DEFAULT_COLLECTOR_DOMAIN_URL,
-            vodDomainURL: String = Options.DEFAULT_VOD_DOMAIN_URL,
-            liveDomainURL: String = Options.DEFAULT_LIVE_DOMAIN_URL
+            collectorDomainURL: String = Options.DEFAULT_COLLECTOR_DOMAIN_URL
         ) = fromMediaURL(
             URL(mediaUrl),
             URL(collectorDomainURL),
-            URL(vodDomainURL),
-            URL(liveDomainURL)
         )
     }
 }
@@ -155,8 +138,5 @@ data class Options(
 
     companion object {
         const val DEFAULT_COLLECTOR_DOMAIN_URL = "https://collector.api.video"
-        const val DEFAULT_VOD_DOMAIN_URL = "https://vod.api.video/vod"
-        const val DEFAULT_DEPRECATED_VOD_DOMAIN_URL = "https://cdn.api.video/vod"
-        const val DEFAULT_LIVE_DOMAIN_URL = "https://live.api.video"
     }
 }

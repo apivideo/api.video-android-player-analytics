@@ -24,36 +24,28 @@ object Utils {
      * Parse a media URL such as `https://vod.api.video/vod/vi5oDagRVJBSKHxSiPux5rYD/hls/manifest.m3u8` to a [VideoInfo] object.
      * @param mediaUrl the media URL to parse
      * @param collectorDomainURL the collector domain URL
-     * @param vodDomainURL the vod domain URL
-     * @param liveDomainURL the live domain URL
      */
     fun parseMediaUrl(
         mediaUrl: URL,
-        collectorDomainURL: URL,
-        vodDomainURLs: List<URL>,
-        liveDomainURL: URL
+        collectorDomainURL: URL
     ): VideoInfo {
-        val regex =
-            "https:/.*[/].*/(?<id>(vi|li)[^/^.]*)[/.].*"
+        val regex = "https://[^/]+/(?>(?<type>vod|live)/)?(?>.*/)?(?<id>(vi|li)[^/^.]*)[/.].*"
         val pattern = Pattern.compile(regex)
         val matcher = pattern.matcher(mediaUrl.toString())
 
-        if (matcher.groupCount() < 2) {
+        if (matcher.groupCount() < 3) {
             throw IOException("The media url doesn't look like an api.video URL.")
         }
 
         try {
             matcher.find()
             // Group naming is not supported before Android API 26
-            val videoType =
-                if (vodDomainURLs.any { mediaUrl.toString().startsWith(it.toString()) }) {
-                    VideoType.VOD
-                } else if (mediaUrl.toString().startsWith(liveDomainURL.toString())) {
-                    VideoType.LIVE
-                } else {
-                    throw IOException("The media url must start with ${vodDomainURLs.joinToString(", ")} or $liveDomainURL")
-                }
-            val videoId = matcher.group(1) ?: throw IOException("Failed to get videoId")
+            val videoId = matcher.group(2) ?: throw IOException("Failed to get videoId")
+
+            // For live, we might not have a type for now because there isn't any `/live/` in the URL.
+            val firstGroup = matcher.group(1)
+            val videoType = firstGroup?.toVideoType()
+                ?: if (videoId.startsWith("li")) VideoType.LIVE else throw IOException("Failed to get videoType")
 
             return VideoInfo(
                 videoId,
@@ -61,7 +53,7 @@ object Utils {
                 collectorDomainURL
             )
         } catch (e: Exception) {
-            throw IOException("The media url doesn't look like an api.video URL", e)
+            throw IOException("The media url $mediaUrl doesn't look like an api.video URL", e)
         }
     }
 }
