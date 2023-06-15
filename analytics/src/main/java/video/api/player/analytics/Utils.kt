@@ -29,7 +29,7 @@ object Utils {
         mediaUrl: URL,
         collectorDomainURL: URL
     ): VideoInfo {
-        val regex = "https://[^/]+/(?>(?<type>vod|live)/)?(?>.*/)?(?<id>(vi|li)[^/^.]*)[/.].*"
+        val regex = "https://[^/]+/(?>(?<type>vod|live)/)?(?>.*/)?(?<id>(vi|li)[^/^.]*).*"
         val pattern = Pattern.compile(regex)
         val matcher = pattern.matcher(mediaUrl.toString())
 
