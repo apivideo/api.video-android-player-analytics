@@ -20,13 +20,13 @@ your app.
 - [Documentation](#documentation)
     - [Options](#options)
     - [ApiVideoPlayerAnalytics API](#apivideoplayeranalytics-api)
-        - [`play(): Future<void>`](#play-futurevoid)
-        - [`resume(): Future<void>`](#resume-futurevoid)
-        - [`ready(): Future<void>`](#ready-futurevoid)
-        - [`end(): Future<void>`](#end-futurevoid)
+        - [`play(): Future<void>`](#playeventtime-float--currenttime-futurevoid)
+        - [`resume(): Future<void>`](#resumeeventtime-float--currenttime-futurevoid)
+        - [`ready(): Future<void>`](#readyeventtime-float--currenttime-futurevoid)
+        - [`end(): Future<void>`](#endeventtime-float--currenttime-futurevoid)
         - [`seek(from: Float, to: Float): Future<void>`](#seekfrom-float-to-float-futurevoid)
-        - [`pause(): Future<void>`](#pause-futurevoid)
-        - [`destroy(): Future<void>`](#destroy-futurevoid)
+        - [`pause(): Future<void>`](#pauseeventtime-float--currenttime-futurevoid)
+        - [`destroy(): Future<void>`](#destroyeventtime-float--currenttime-futurevoid)
         - [`currentTime`](#currenttime)
     - [API documentation](#api-documentation)
 
@@ -72,15 +72,15 @@ folder.
 
 The analytics module constructor takes a `Options` parameter that contains the following options:
 
-|         Option name | Mandatory | Type                                                                                          | Description                                                                                                  |
-| ------------------: | --------- |-----------------------------------------------------------------------------------------------| ------------------------------------------------------------------------------------------------------------ |
-|            mediaUrl | **
-yes**   | String                                          | url of the media (eg. `https://vod.api.video/vod/vi5oDagRVJBSKHxSiPux5rYD/hls/manifest.m3u8`) |
-|           videoInfo | **
-yes**   | VideoInfo                                       | information containing analytics collector url, video type (vod or live) and video id         |
-|            metadata | no        | ```Map<String, String>```                                                                     | object containing [metadata](https://api.video/blog/tutorials/dynamic-metadata)                              |
-| onSessionIdReceived | no        | ```((sessionId: String) -> Unit)?```                                                          | callback called once the session id has been received                                                        |
-|              onPing | no        | ```((message: PlaybackPingMessage) -> Unit)?```                                               | callback called before sending the ping message                                                              |
+|         Option name | Mandatory | Type                                                                                          | Description                                                                     |
+|--------------------:|-----------|-----------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|
+|            mediaUrl | **        |                                                                                               |                                                                                 |
+|               yes** | String    | url of the media (eg. `https://vod.api.video/vod/vi5oDagRVJBSKHxSiPux5rYD/hls/manifest.m3u8`) |                                                                                 |
+|           videoInfo | **        |                                                                                               |                                                                                 |
+|               yes** | VideoInfo | information containing analytics collector url, video type (vod or live) and video id         |                                                                                 |
+|            metadata | no        | ```Map<String, String>```                                                                     | object containing [metadata](https://api.video/blog/tutorials/dynamic-metadata) |
+| onSessionIdReceived | no        | ```((sessionId: String) -> Unit)?```                                                          | callback called once the session id has been received                           |
+|              onPing | no        | ```((message: PlaybackPingMessage) -> Unit)?```                                               | callback called before sending the ping message                                 |
 
 Options instantiation is made with either mediaUrl or videoInfo.
 
@@ -96,7 +96,8 @@ event timestamp, you can set the `currentTime` parameter with a scheduler.
 
 #### `play(eventTime: Float = currentTime): Future<void>`
 
-> method to call when the video starts playing for the first time (in the case of a resume after paused, use `resume()`)
+> method to call when the video starts playing for the first time (in the case of a resume after
+> paused, use `resume()`)
 
 #### `resume(eventTime: Float = currentTime): Future<void>`
 
@@ -112,7 +113,8 @@ event timestamp, you can set the `currentTime` parameter with a scheduler.
 
 #### `seek(from: Float, to: Float): Future<void>`
 
-> method to call when a seek event occurs, the `from` and `to` parameters are mandatory and should contains the seek start & end times in seconds
+> method to call when a seek event occurs, the `from` and `to` parameters are mandatory and should
+> contains the seek start & end times in seconds
 
 #### `pause(eventTime: Float = currentTime): Future<void>`
 
@@ -124,7 +126,8 @@ event timestamp, you can set the `currentTime` parameter with a scheduler.
 
 #### `currentTime`
 
-> field to call each time the playback time changes (it should be called often, the accuracy of the collected data depends on it) if you don't know event time.
+> field to call each time the playback time changes (it should be called often, the accuracy of the
+> collected data depends on it) if you don't know event time.
 
 ## API documentation
 
