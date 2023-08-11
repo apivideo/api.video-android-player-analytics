@@ -1,11 +1,11 @@
 package video.api.player.analytics.example.exoplayer
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.media3.common.MediaItem
+import androidx.media3.exoplayer.ExoPlayer
 import androidx.preference.PreferenceManager
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.source.DefaultMediaSourceFactory
 import video.api.analytics.exoplayer.ApiVideoAnalyticsListener
 import video.api.player.analytics.example.exoplayer.databinding.ActivityMainBinding
 
@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity() {
         player
     }
 
+    @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -37,9 +38,12 @@ class MainActivity : AppCompatActivity() {
 
         binding.playerView.player = player
         binding.loadButton.setOnClickListener {
-            val mediaItem = MediaItem.fromUri(videoUrl)
-            player.setMediaSource(DefaultMediaSourceFactory(this).createMediaSource(mediaItem))
-            player.addAnalyticsListener(ApiVideoAnalyticsListener(player, videoUrl))
+            try {
+                player.setMediaItem(MediaItem.fromUri(videoUrl))
+                player.addAnalyticsListener(ApiVideoAnalyticsListener(player, videoUrl))
+            } catch (e: Exception) {
+                Log.e("MainActivity", "Error while loading video", e)
+            }
         }
     }
 

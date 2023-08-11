@@ -1,8 +1,8 @@
 package video.api.analytics.exoplayer
 
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.analytics.AnalyticsListener
+import androidx.media3.common.Player
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.analytics.AnalyticsListener
 import video.api.player.analytics.ApiVideoPlayerAnalytics
 import video.api.player.analytics.Options
 import video.api.player.analytics.VideoInfo
@@ -67,6 +67,7 @@ private constructor(
     private var firstPlay = true
     private var isReady = false
 
+    @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
     override fun onIsPlayingChanged(
         eventTime: AnalyticsListener.EventTime,
         isPlaying: Boolean
@@ -85,6 +86,7 @@ private constructor(
         }
     }
 
+    @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
     override fun onPlaybackStateChanged(eventTime: AnalyticsListener.EventTime, state: Int) {
         if (state == Player.STATE_READY) {
             if (!isReady) {
@@ -96,6 +98,7 @@ private constructor(
         }
     }
 
+    @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
     override fun onPositionDiscontinuity(
         eventTime: AnalyticsListener.EventTime,
         oldPosition: Player.PositionInfo,
@@ -110,6 +113,7 @@ private constructor(
         }
     }
 
+    @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
     override fun onPlayerReleased(eventTime: AnalyticsListener.EventTime) {
         analytics.destroy(eventTime.toSeconds())
     }

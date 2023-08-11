@@ -43,8 +43,9 @@ dependencies {
     implementation "androidx.preference:preference-ktx:1.2.0"
     implementation project(path: ':exoplayer')
 
-    implementation 'com.google.android.exoplayer:exoplayer:2.19.0'
-    implementation 'com.google.android.exoplayer:exoplayer-hls:2.19.0'
+    implementation "androidx.media3:media3-exoplayer:${rootProject.exoplayerVersion}"
+    implementation "androidx.media3:media3-exoplayer-hls:${rootProject.exoplayerVersion}"
+    implementation "androidx.media3:media3-ui:${rootProject.exoplayerVersion}"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

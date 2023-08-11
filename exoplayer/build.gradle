@@ -9,8 +9,8 @@ ext {
 dependencies {
 
     implementation 'androidx.core:core-ktx:1.10.1'
-    implementation 'com.google.android.exoplayer:exoplayer:2.19.0'
     implementation project(path: ':analytics')
+    implementation "androidx.media3:media3-exoplayer:${rootProject.exoplayerVersion}"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

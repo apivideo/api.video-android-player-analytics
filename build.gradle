@@ -10,9 +10,10 @@ buildscript {
         versionCode = properties['VERSION_CODE'].toInteger()
         versionName = "${properties['VERSION_NAME']}"
 
-        // Kotlin
-        kotlin_version = '1.8.0'
-        dokka_version = "1.8.20"
+        // Software versions
+        kotlinVersion = '1.8.0'
+        dokkaVersion = "1.8.20"
+        exoplayerVersion = '1.1.0'
     }
     repositories {
         google()
@@ -20,8 +21,8 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.4.2'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "org.jetbrains.dokka:dokka-gradle-plugin:$dokka_version"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:$dokkaVersion"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -42,6 +43,6 @@ tasks.dokkaHtmlMultiModule {
     )
 }
 
-task clean(type: Delete) {
+tasks.register('clean', Delete) {
     delete rootProject.buildDir
 }
