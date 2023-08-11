@@ -2,6 +2,10 @@
 
 All changes to this project will be documented in this file.
 
+## [1.4.0] - 2023-08-11
+
+- Migrate ExoPlayer to `media3`
+
 ## [1.3.1] - 2023-07-24
 
 - Upgrade dependencies
