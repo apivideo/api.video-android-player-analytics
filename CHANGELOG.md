@@ -2,6 +2,12 @@
 
 All changes to this project will be documented in this file.
 
+## [2.0.0] - 2023-09-26
+
+- Replace Future by Callback to support Android >= 21
+- Add support for Android 34
+- CI: Upgrade GitHub Actions to fix warnings for documentation workflow
+
 ## [1.4.0] - 2023-08-11
 
 - Migrate ExoPlayer to `media3`
