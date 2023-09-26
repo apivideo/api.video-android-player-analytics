@@ -1,8 +1,8 @@
 package video.api.player.analytics
 
+import android.util.Log
 import java.io.IOException
-import java.util.*
-import java.util.concurrent.CompletableFuture
+import java.util.Timer
 import java.util.concurrent.Future
 import kotlin.concurrent.timerTask
 
@@ -17,6 +17,8 @@ class ApiVideoPlayerAnalytics(
     private val options: Options
 ) {
     companion object {
+        private const val TAG = "ApiVideoPlayerAnalytics"
+
         private const val PLAYBACK_PING_DELAY = 10 * 1000L
     }
 
@@ -49,54 +51,101 @@ class ApiVideoPlayerAnalytics(
         }
 
     /**
-     * Calls for the first play of the video.
+     * To be called when user plays a video for the first time.
      *
+     * @param eventTime the event time in second. Default is the current time.
+     * @param onSuccess the callback called when the events were successfully sent.
+     * @param onError the callback called when the events could not be send.
      * @return a [Future] result. Use it to check if an exception has happened.
      */
-    fun play(eventTime: Float = currentTime): Future<Unit> {
+    fun play(
+        eventTime: Float = currentTime,
+        onSuccess: (() -> Unit) = {},
+        onError: ((Exception) -> Unit) = { error ->
+            Log.e(TAG, "Failed to send play event", error)
+        }
+    ) {
         schedule()
-        return addEventAt(Event.PLAY, eventTime)
+        addEventAt(Event.PLAY, eventTime)
+        onSuccess()
     }
 
     /**
-     * Resumes a paused video.
+     * To be called when user resumes a paused video.
      *
+     * @param eventTime the event time in second. Default is the current time.
+     * @param onSuccess the callback called when the events were successfully sent.
+     * @param onError the callback called when the events could not be send.
      * @return a [Future] result. Use it to check if an exception has happened.
      */
-    fun resume(eventTime: Float = currentTime): Future<Unit> {
+    fun resume(
+        eventTime: Float = currentTime,
+        onSuccess: (() -> Unit) = {},
+        onError: ((Exception) -> Unit) = { error ->
+            Log.e(TAG, "Failed to send resume event", error)
+        }
+    ) {
         schedule()
-        return addEventAt(Event.RESUME, eventTime)
+        addEventAt(Event.RESUME, eventTime)
+        onSuccess()
     }
 
     /**
-     * Calls when video is ready to play.
+     * To be called when video is ready to play.
      *
+     * @param eventTime the event time in second. Default is the current time.
+     * @param onSuccess the callback called when the events were successfully sent.
+     * @param onError the callback called when the events could not be send.
      * @return a [Future] result. Use it to check if an exception has happened.
      */
-    fun ready(eventTime: Float = currentTime): Future<Unit> {
+    fun ready(
+        eventTime: Float = currentTime,
+        onSuccess: (() -> Unit) = {},
+        onError: ((Exception) -> Unit) = { error ->
+            Log.e(TAG, "Failed to send ready event", error)
+        }
+    ) {
         addEventAt(Event.READY, eventTime)
-        return sendPing(buildPingPayload())
+        sendPing(buildPingPayload(), onSuccess, onError)
     }
 
     /**
-     * Calls when video is over.
+     * To be called when playback is at the end of the video.
      *
+     * @param eventTime the event time in second. Default is the current time.
+     * @param onSuccess the callback called when the events were successfully sent.
+     * @param onError the callback called when the events could not be send.
      * @return a [Future] result. Use it to check if an exception has happened.
      */
-    fun end(eventTime: Float = currentTime): Future<Unit> {
+    fun end(
+        eventTime: Float = currentTime,
+        onSuccess: (() -> Unit) = {},
+        onError: ((Exception) -> Unit) = { error ->
+            Log.e(TAG, "Failed to send end event", error)
+        }
+    ) {
         unschedule()
         addEventAt(Event.END, eventTime)
-        return sendPing(buildPingPayload())
+        sendPing(buildPingPayload(), onSuccess, onError)
     }
 
     /**
-     * Calls when video is being seek.
+     * To be called when video is being seek.
      *
      * @param from the seek start time in second
      * @param to the seek end time in second
+     * @param onSuccess the callback called when the events were successfully sent.
+     * @param onError the callback called when the events could not be send.
      * @return a [Future] result. Use it to check if an exception has happened.
      */
-    fun seek(from: Float, to: Float): Future<Unit> {
+    fun seek(
+        from: Float,
+        to: Float,
+        onSuccess: (() -> Unit) = {},
+        onError: ((Exception) -> Unit) = { error ->
+            Log.e(TAG, "Failed to send seek event", error)
+        }
+    ) {
         if ((from >= 0) && (to >= 0)) {
             eventsStack.add(
                 PingEvent(
@@ -109,36 +158,53 @@ class ApiVideoPlayerAnalytics(
                     to = to
                 )
             )
-            return CompletableFuture.completedFuture(Unit)
+            onSuccess()
         } else {
             throw IOException("from and to must be positive value but from=$from to=$to")
         }
     }
 
     /**
-     * Calls when video is paused.
+     * To be called when a video is paused.
      *
+     * @param eventTime the event time in second. Default is the current time.
+     * @param onSuccess the callback called when the events were successfully sent.
+     * @param onError the callback called when the events could not be send.
      * @return a [Future] result. Use it to check if an exception has happened.
      */
-    fun pause(eventTime: Float = currentTime): Future<Unit> {
+    fun pause(
+        eventTime: Float = currentTime,
+        onSuccess: (() -> Unit) = {},
+        onError: ((Exception) -> Unit) = { error ->
+            Log.e(TAG, "Failed to send pause event", error)
+        }
+    ) {
         unschedule()
         addEventAt(Event.PAUSE, eventTime)
-        return sendPing(buildPingPayload())
+        sendPing(buildPingPayload(), onSuccess, onError)
     }
 
     /**
-     * Calls when video will not be read again.
+     * To be called when video will not be read again.
      *
+     * @param eventTime the event time in second. Default is the current time.
+     * @param onSuccess the callback called when the events were successfully sent.
+     * @param onError the callback called when the events could not be send.
      * @return a [Future] result. Use it to check if an exception has happened.
      */
-    fun destroy(eventTime: Float = currentTime): Future<Unit> {
+    fun destroy(
+        eventTime: Float = currentTime,
+        onSuccess: (() -> Unit) = {},
+        onError: ((Exception) -> Unit) = { error ->
+            Log.e(TAG, "Failed to send destroy event", error)
+        }
+    ) {
         unschedule()
-        return pause(eventTime)
+        pause(eventTime, onSuccess, onError)
     }
 
-    private fun addEventAt(eventName: Event, eventTime: Float): Future<Unit> {
+    private fun addEventAt(eventName: Event, eventTime: Float) {
         eventsStack.add(PingEvent(type = eventName, at = eventTime))
-        return CompletableFuture.completedFuture(Unit)
     }
 
     private fun schedule() {
@@ -169,6 +235,7 @@ class ApiVideoPlayerAnalytics(
                 metadata = options.metadata,
                 referrer = ""
             )
+
             VideoType.VOD -> Session.buildVodSession(
                 sessionId = sessionId,
                 loadedAt = loadedAt,
@@ -183,19 +250,21 @@ class ApiVideoPlayerAnalytics(
         )
     }
 
-    private fun sendPing(payload: PlaybackPingMessage): Future<Unit> {
+    private fun sendPing(
+        payload: PlaybackPingMessage,
+        onSuccess: (() -> Unit) = {},
+        onError: ((Exception) -> Unit) = {}
+    ) {
         options.onPing?.let { it(payload) }
-        val future = CompletableFuture<Unit>()
         RequestManager.sendPing(options.videoInfo.pingUrl, payload,
             {
                 if (sessionId == null) {
                     sessionId = it
                 }
-                future.complete(Unit)
+                onSuccess()
             }, { error ->
-                future.completeExceptionally(error)
+                onError(error)
             })
         eventsStack.clear()
-        return future
     }
 }

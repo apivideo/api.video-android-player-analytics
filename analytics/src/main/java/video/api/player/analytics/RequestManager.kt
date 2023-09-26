@@ -28,8 +28,7 @@ object RequestManager {
         payload: PlaybackPingMessage,
         onSuccess: (String) -> Unit,
         onError: (Exception) -> Unit
-    ): Future<Unit> {
-        val future = CompletableFuture<Unit>()
+    ) {
         val stringRequest = StringRequest(
             Request.Method.POST,
             url,
@@ -51,6 +50,5 @@ object RequestManager {
             })
 
         queue.add(stringRequest)
-        return future
     }
 }
