@@ -2,6 +2,11 @@
 
 All changes to this project will be documented in this file.
 
+## [2.0.1] - 2023-09-26
+
+- Fix a crash with parsing of URL on old Android versions due to group named capture
+- Display the exception in the default error handler
+
 ## [2.0.0] - 2023-09-26
 
 - Replace Future by Callback to support Android >= 21
