@@ -62,7 +62,7 @@ class ApiVideoPlayerAnalytics(
         eventTime: Float = currentTime,
         onSuccess: (() -> Unit) = {},
         onError: ((Exception) -> Unit) = { error ->
-            Log.e(TAG, "Failed to send play event", error)
+            Log.e(TAG, "Failed to send play event: $error", error)
         }
     ) {
         schedule()
@@ -82,7 +82,7 @@ class ApiVideoPlayerAnalytics(
         eventTime: Float = currentTime,
         onSuccess: (() -> Unit) = {},
         onError: ((Exception) -> Unit) = { error ->
-            Log.e(TAG, "Failed to send resume event", error)
+            Log.e(TAG, "Failed to send resume event: $error", error)
         }
     ) {
         schedule()
@@ -102,7 +102,7 @@ class ApiVideoPlayerAnalytics(
         eventTime: Float = currentTime,
         onSuccess: (() -> Unit) = {},
         onError: ((Exception) -> Unit) = { error ->
-            Log.e(TAG, "Failed to send ready event", error)
+            Log.e(TAG, "Failed to send ready event: $error", error)
         }
     ) {
         addEventAt(Event.READY, eventTime)
@@ -121,7 +121,7 @@ class ApiVideoPlayerAnalytics(
         eventTime: Float = currentTime,
         onSuccess: (() -> Unit) = {},
         onError: ((Exception) -> Unit) = { error ->
-            Log.e(TAG, "Failed to send end event", error)
+            Log.e(TAG, "Failed to send end event: $error", error)
         }
     ) {
         unschedule()
@@ -143,7 +143,7 @@ class ApiVideoPlayerAnalytics(
         to: Float,
         onSuccess: (() -> Unit) = {},
         onError: ((Exception) -> Unit) = { error ->
-            Log.e(TAG, "Failed to send seek event", error)
+            Log.e(TAG, "Failed to send seek event: $error", error)
         }
     ) {
         if ((from >= 0) && (to >= 0)) {
@@ -176,7 +176,7 @@ class ApiVideoPlayerAnalytics(
         eventTime: Float = currentTime,
         onSuccess: (() -> Unit) = {},
         onError: ((Exception) -> Unit) = { error ->
-            Log.e(TAG, "Failed to send pause event", error)
+            Log.e(TAG, "Failed to send pause event: $error", error)
         }
     ) {
         unschedule()
@@ -196,7 +196,7 @@ class ApiVideoPlayerAnalytics(
         eventTime: Float = currentTime,
         onSuccess: (() -> Unit) = {},
         onError: ((Exception) -> Unit) = { error ->
-            Log.e(TAG, "Failed to send destroy event", error)
+            Log.e(TAG, "Failed to send destroy event: $error", error)
         }
     ) {
         unschedule()

@@ -72,7 +72,7 @@ class AnalyticsVideoView(context: Context, attrs: AttributeSet) :
         try {
             playerAnalytics?.seek(from, msec.toAnalyticsTime())
         } catch (e: Exception) {
-            Log.e(TAG, "Seeking from $from to ${msec.toAnalyticsTime()} failed. Incorrect values?")
+            Log.e(TAG, "Seeking from $from to ${msec.toAnalyticsTime()} failed: $e", e)
         }
         super.seekTo(msec)
     }
