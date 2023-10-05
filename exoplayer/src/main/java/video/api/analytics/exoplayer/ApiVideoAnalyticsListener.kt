@@ -34,7 +34,7 @@ private constructor(
         player: ExoPlayer,
         videoInfo: VideoInfo,
         onError: ((Exception) -> Unit) = { error ->
-            Log.e(TAG, "Failed to send event: $error", error)
+            Log.e(TAG, "Failed to send events: $error", error)
         }
     ) : this(
         player,
@@ -53,7 +53,7 @@ private constructor(
         player: ExoPlayer,
         mediaUrl: URL,
         onError: ((Exception) -> Unit) = { error ->
-            Log.e(TAG, "Failed to send event: $error", error)
+            Log.e(TAG, "Failed to send events: $error", error)
         }
     ) : this(
         player,
@@ -74,7 +74,7 @@ private constructor(
         player: ExoPlayer,
         mediaUrl: String,
         onError: ((Exception) -> Unit) = { error ->
-            Log.e(TAG, "Failed to send event: $error", error)
+            Log.e(TAG, "Failed to send events: $error", error)
         }
     ) : this(
         player,
