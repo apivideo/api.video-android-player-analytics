@@ -146,22 +146,21 @@ class ApiVideoPlayerAnalytics(
             Log.e(TAG, "Failed to send seek event: $error", error)
         }
     ) {
-        if ((from >= 0) && (to >= 0)) {
-            eventsStack.add(
-                PingEvent(
-                    type = if (from < to) {
-                        Event.SEEK_FORWARD
-                    } else {
-                        Event.SEEK_BACKWARD
-                    },
-                    from = from,
-                    to = to
-                )
+        require(from >= 0f) { "from must be positive value but from=$from" }
+        require(to >= 0f) { "to must be positive value but to=$to" }
+
+        eventsStack.add(
+            PingEvent(
+                type = if (from < to) {
+                    Event.SEEK_FORWARD
+                } else {
+                    Event.SEEK_BACKWARD
+                },
+                from = from,
+                to = to
             )
-            onSuccess()
-        } else {
-            throw IOException("from and to must be positive value but from=$from to=$to")
-        }
+        )
+        onSuccess()
     }
 
     /**
@@ -263,6 +262,7 @@ class ApiVideoPlayerAnalytics(
                 }
                 onSuccess()
             }, { error ->
+                Log.e(TAG, "Failed to send payload $payload due to $error")
                 onError(error)
             })
         eventsStack.clear()

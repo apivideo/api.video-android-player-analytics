@@ -8,6 +8,7 @@ import video.api.player.analytics.ApiVideoPlayerAnalytics
 import video.api.player.analytics.Options
 import video.api.player.analytics.VideoInfo
 import java.net.URL
+import kotlin.math.max
 
 /**
  * api.video implementation of [AnalyticsListener] for ExoPlayer.
@@ -123,9 +124,11 @@ private constructor(
         reason: Int
     ) {
         if (reason == Player.DISCONTINUITY_REASON_SEEK) {
+            val from = max(oldPosition.positionMs.toSeconds(), 0f)
+            val to = max(newPosition.positionMs.toSeconds(), 0f)
             analytics.seek(
-                oldPosition.positionMs.toSeconds(),
-                newPosition.positionMs.toSeconds(),
+                from,
+                to,
                 onError = onError
             )
         }
