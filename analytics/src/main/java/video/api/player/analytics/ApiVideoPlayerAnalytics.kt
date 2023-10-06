@@ -23,7 +23,10 @@ class ApiVideoPlayerAnalytics(
     }
 
     private val eventsStack = mutableListOf<PingEvent>()
+
     private var timer: Timer? = null
+    private val timerLock = Any()
+
     private val loadedAt: String = Utils.nowUtcToIso()
     internal var sessionId: String? = null
         set(value) {
@@ -66,7 +69,9 @@ class ApiVideoPlayerAnalytics(
         }
     ) {
         schedule()
-        addEventAt(Event.PLAY, eventTime)
+        synchronized(this) {
+            addEventAt(Event.PLAY, eventTime)
+        }
         onSuccess()
     }
 
@@ -86,7 +91,9 @@ class ApiVideoPlayerAnalytics(
         }
     ) {
         schedule()
-        addEventAt(Event.RESUME, eventTime)
+        synchronized(this) {
+            addEventAt(Event.RESUME, eventTime)
+        }
         onSuccess()
     }
 
@@ -105,8 +112,11 @@ class ApiVideoPlayerAnalytics(
             Log.e(TAG, "Failed to send ready event: $error", error)
         }
     ) {
-        addEventAt(Event.READY, eventTime)
-        sendPing(buildPingPayload(), onSuccess, onError)
+        val payload = synchronized(this) {
+            addEventAt(Event.READY, eventTime)
+            buildPingPayload()
+        }
+        sendPing(payload, onSuccess, onError)
     }
 
     /**
@@ -125,8 +135,11 @@ class ApiVideoPlayerAnalytics(
         }
     ) {
         unschedule()
-        addEventAt(Event.END, eventTime)
-        sendPing(buildPingPayload(), onSuccess, onError)
+        val payload = synchronized(this) {
+            addEventAt(Event.END, eventTime)
+            buildPingPayload()
+        }
+        sendPing(payload, onSuccess, onError)
     }
 
     /**
@@ -149,17 +162,19 @@ class ApiVideoPlayerAnalytics(
         require(from >= 0f) { "from must be positive value but from=$from" }
         require(to >= 0f) { "to must be positive value but to=$to" }
 
-        eventsStack.add(
-            PingEvent(
-                type = if (from < to) {
-                    Event.SEEK_FORWARD
-                } else {
-                    Event.SEEK_BACKWARD
-                },
-                from = from,
-                to = to
+        synchronized(this) {
+            eventsStack.add(
+                PingEvent(
+                    type = if (from < to) {
+                        Event.SEEK_FORWARD
+                    } else {
+                        Event.SEEK_BACKWARD
+                    },
+                    from = from,
+                    to = to
+                )
             )
-        )
+        }
         onSuccess()
     }
 
@@ -179,8 +194,11 @@ class ApiVideoPlayerAnalytics(
         }
     ) {
         unschedule()
-        addEventAt(Event.PAUSE, eventTime)
-        sendPing(buildPingPayload(), onSuccess, onError)
+        val payload = synchronized(this) {
+            addEventAt(Event.PAUSE, eventTime)
+            buildPingPayload()
+        }
+        sendPing(payload, onSuccess, onError)
     }
 
     /**
@@ -207,11 +225,14 @@ class ApiVideoPlayerAnalytics(
     }
 
     private fun schedule() {
-        synchronized(this) {
+        synchronized(timerLock) {
             if (timer == null) {
                 timer = Timer().apply {
                     scheduleAtFixedRate(timerTask {
-                        sendPing(buildPingPayload())
+                        val payload = synchronized(this) {
+                            buildPingPayload()
+                        }
+                        sendPing(payload)
                     }, PLAYBACK_PING_DELAY, PLAYBACK_PING_DELAY)
                 }
             }
@@ -219,7 +240,7 @@ class ApiVideoPlayerAnalytics(
     }
 
     private fun unschedule() {
-        synchronized(this) {
+        synchronized(timerLock) {
             timer?.cancel()
             timer = null
         }
@@ -243,10 +264,12 @@ class ApiVideoPlayerAnalytics(
                 referrer = ""
             )
         }
-        return PlaybackPingMessage(
+        val message = PlaybackPingMessage(
             session = session,
             events = eventsStack
         )
+        eventsStack.clear()
+        return message
     }
 
     private fun sendPing(
@@ -265,6 +288,5 @@ class ApiVideoPlayerAnalytics(
                 Log.e(TAG, "Failed to send payload $payload due to $error")
                 onError(error)
             })
-        eventsStack.clear()
     }
 }
