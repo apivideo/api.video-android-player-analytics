@@ -2,6 +2,11 @@
 
 All changes to this project will be documented in this file.
 
+## [2.0.2] - 2023-10-09
+
+- Fix a crash on ExoPlayer Analytics when position < 0.0f
+- Synchronize generation of ping payload
+
 ## [2.0.1] - 2023-09-26
 
 - Fix a crash with parsing of URL on old Android versions due to group named capture
