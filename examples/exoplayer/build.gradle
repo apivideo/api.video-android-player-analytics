@@ -8,8 +8,11 @@ android {
 
     defaultConfig {
         applicationId "video.api.analytics.example.exoplayer"
+
         minSdk rootProject.minSdk
         targetSdk rootProject.targetSdk
+        compileSdk rootProject.compileSdk
+
         versionCode rootProject.versionCode
         versionName rootProject.versionName
 

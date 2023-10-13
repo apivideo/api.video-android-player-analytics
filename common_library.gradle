@@ -3,11 +3,10 @@ apply plugin: 'kotlin-android'
 apply plugin: 'org.jetbrains.dokka'
 
 android {
-    compileSdk project.compileSdk
-
     defaultConfig {
-        minSdk project.minSdk
-        targetSdk project.targetSdk
+        minSdk rootProject.minSdk
+        targetSdk rootProject.targetSdk
+        compileSdk rootProject.compileSdk
 
         consumerProguardFiles 'proguard-rules.txt'
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'

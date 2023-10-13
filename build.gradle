@@ -3,16 +3,20 @@ apply plugin: 'org.jetbrains.dokka'
 
 buildscript {
     ext {
-        compileSdk = 34
+        // SDK and tools
         minSdk = 21
+        compileSdk = 34
         targetSdk = 34
 
+        // Kotlin
+        kotlinVersion = "1.8.22"
+        dokkaVersion = "1.8.20"
+
+        // Example
         versionCode = properties['VERSION_CODE'].toInteger()
         versionName = "${properties['VERSION_NAME']}"
 
-        // Software versions
-        kotlinVersion = '1.8.0'
-        dokkaVersion = "1.8.20"
+        // Library
         exoplayerVersion = '1.1.1'
     }
     repositories {
