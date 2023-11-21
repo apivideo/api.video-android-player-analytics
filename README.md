@@ -147,4 +147,3 @@ collected data depends on it) if you don't know event time.
 ### API documentation
 
 A complete [API documentation](https://apivideo.github.io/api.video-android-player-analytics/) is available.
-
