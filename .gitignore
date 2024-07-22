@@ -1,10 +1,15 @@
-*.iml
+# Gradle/build
 .gradle
-/local.properties
-/.idea
-.DS_Store
 /build
-/captures
 .externalNativeBuild
 .cxx
+
+# Intellij
+*.iml
+.idea/
+
+# Local file
 local.properties
+
+# Mac
+.DS_Store
