@@ -1,7 +1,10 @@
 $dokka.format:html-v1
 $dokka.linkExtension:html
 
-module:analytics
-video.api.player.analytics
-module:exoplayer
-video.api.analytics.exoplayer
+module:example
+video.api.player.analytics.exoplayer.example
+module:player-analytics-core
+video.api.player.analytics.core
+video.api.player.analytics.core.payload
+module:player-analytics-exoplayer
+video.api.player.analytics.exoplayer.extensions
