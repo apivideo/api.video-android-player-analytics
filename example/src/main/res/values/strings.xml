@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">PlayerAnalyticsExample</string>
+    <string name="load">Load</string>
+    <string name="media_id">Media Id</string>
+    <string name="media_id_default">vi77Dgk0F8eLwaFOtC5870yn</string>
+    <string name="media_id_key">media_id_key</string>
+</resources>
