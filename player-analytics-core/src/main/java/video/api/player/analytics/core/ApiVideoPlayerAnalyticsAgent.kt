@@ -137,9 +137,7 @@ class ApiVideoPlayerAnalyticsAgent private constructor(
             )
         }
 
-        if (httpResponse.status.value in 200..299) {
-            Log.d(TAG, "Successfully reported events $batch")
-        } else {
+        if (httpResponse.status.value !in 200..299) {
             Log.e(
                 TAG,
                 "Error: ${httpResponse.status.value}: ${httpResponse.status.description} for payload: $batch"
