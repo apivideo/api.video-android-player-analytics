@@ -18,7 +18,7 @@ plugins {
 
 allprojects {
     group = "video.api.player.analytics"
-    version = "3.0.0"
+    version = "3.0.1"
 }
 
 subprojects {

@@ -2,6 +2,10 @@
 
 All changes to this project will be documented in this file.
 
+## [3.0.1] - 2025-01-24
+
+- Fix a crash on ExoPlayer Analytics when position < 0.0f
+
 ## [3.0.0] - 2024-07-24
 
 - Use Analytics endpoint v2

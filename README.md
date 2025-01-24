@@ -45,7 +45,7 @@ For ExoPlayer, add the following code in your module `build.gradle`:
 
 ```groovy
 dependencies {
-    implementation 'video.api.player.analytics:android-player-analytics-exoplayer:3.0.0'
+    implementation 'video.api.player.analytics:android-player-analytics-exoplayer:3.0.1'
 }
 ```
 
